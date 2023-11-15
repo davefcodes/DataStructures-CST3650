@@ -6,7 +6,9 @@ import org.w3c.dom.ls.LSOutput;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
 
 import static edu.citytech.cst3650.datastructure.array.ArrayUtilityHelper.allocateMoreData;
 public class DynamicArray<T extends Comparable<T>> extends AbstractList<T> {
@@ -26,7 +28,6 @@ public class DynamicArray<T extends Comparable<T>> extends AbstractList<T> {
         super.intFunction = intFunction;
         super.index = 0;
     }
-
 
 
     @Override
@@ -117,21 +118,21 @@ public class DynamicArray<T extends Comparable<T>> extends AbstractList<T> {
     // T5_Remove - 10 test
     @Override
     public boolean remove(T data) {
-       int index = -1;
+        int index = -1;
 
-       for (int i = 0; i < items.length; i++){
-           if (items[i].equals(data)){
-               index = i;
-               break;
-           }
-       }
-       if (index == -1){
-           return false;
-       }
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].equals(data)) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) {
+            return false;
+        }
 
-       items = ArrayUtilityHelper.removeByIndex(super.intFunction, items, index);
-       decrementSize();
-       return true;
+        items = ArrayUtilityHelper.removeByIndex(super.intFunction, items, index);
+        decrementSize();
+        return true;
     }
 
     @Override
@@ -180,4 +181,15 @@ public class DynamicArray<T extends Comparable<T>> extends AbstractList<T> {
         consumer.accept(minIndex, minValue);
     }
 
+    @Override
+    public void filter(Predicate<T> predicate, Consumer<T> consumer) {
+        // Implement filter method for DynamicArray
+        for (int i = 0; i < index; i++) {
+            T element = items[i];
+            if (predicate.test(element)) {
+                consumer.accept(element);
+            }
+        }
+
+    }
 }
